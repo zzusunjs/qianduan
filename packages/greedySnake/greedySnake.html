@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>贪吃蛇</title>
+		<style>
+			#box {
+				margin-left: 252px;
+				margin-top: 100px;
+				width: 365px;
+				height: 365px;
+				float: left;
+			}
+			
+			#box2 {
+				margin-left: 100px;
+				margin-top: 100px;
+				width: 365px;
+				height: 365px;
+				float: left;
+			}
+			
+			.gezi {
+				width: 10px;
+				height: 10px;
+				float: left;
+				background-color: white;
+				border: solid 1px gold;
+			}
+			
+			.snack {
+				width: 10px;
+				height: 10px;
+				float: left;
+				background-color: darkblue;
+				border: 1px dotted black;
+			}
+			
+			.bia {
+				width: 10px;
+				height: 10px;
+				float: left;
+				background-color: orange;
+				border: 1px dotted black;
+			}
+			
+			.wall {
+				width: 10px;
+				height: 10px;
+				float: left;
+				background-color: brown;
+				border: 1px dotted black;
+			}
+			
+			.shetou {
+				width: 10px;
+				height: 10px;
+				float: left;
+				background-color: red;
+				border: 1px dotted black;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="box"></div>
+		<div id="box2"></div>
+		<script type="text/javascript">
+			var sheconstructor = function(name) {
+				this.name = name;
+				this.heng = 30;
+				this.shu = 30;
+				this.she = [];
+				this.maps = [];
+				this.automaps = [];
+				this.autobook = [];
+				this.sheLength = 3;
+				this.keycode = 119;
+				this.keystring = '';
+				this.box = document.getElementById('box');
+				this.box2 = document.getElementById('box2');
+				this.isBigger = false;
+				this.isFirst = true;
+				this.biax = 26;
+				this.biay = 15;
+				this.dir = [];
+				this.walls = [];
+				this.interval;
+				this.xdirection;
+				this.ydirection;
+				this.trace = [];
+				this.orderfromauto = [65, 87, 68, 83];
+			};
+
+			sheconstructor.prototype.dealKeyPress = function(obj) {
+				var res = true;
+				var keycode = this.keycode;
+				var keystring = this.keystring;
+				var zero = 0;
+				var one = 1;
+				var two = 2;
+				var three = 3;
+				if(obj.name == "box") {
+					if(this.keycode == 97  || this.keycode == 65) {
+						obj.eat(zero);
+						res = obj.left(obj);
+
+					} else if(this.keycode == 119 || this.keycode == 87) {
+						obj.eat(one);
+						res = obj.up(obj);
+						//					alert("up ");
+					} else if(keycode == 100  || keycode == 68) {
+						obj.eat(2);
+						res = obj.right(obj);
+					} else if(keycode == 115  || keycode == 83) {
+						obj.eat(3);
+						res = obj.down(obj);
+					} else {
+
+					}
+
+				}else{
+					if(this.keystring == "ArrowLeft") {
+						obj.eat(zero);
+						res = obj.left(obj);
+
+					} else if(this.keystring == "ArrowUp") {
+						obj.eat(one);
+						res = obj.up(obj);
+					} else if(keystring == "ArrowRight") {
+						obj.eat(2);
+						res = obj.right(obj);
+					} else if(keystring == "ArrowDown") {
+						obj.eat(3);
+						res = obj.down(obj);
+					} else {
+					}
+				}
+				obj.paintgame(obj);
+				//               console.log("bia " + biax + " " + biay);
+				//				console.log(keycode + " keycode");
+				//				console.log(keystring + " key");
+				if(res == false) {
+					clearInterval(this.interval);
+					                 	alert("Game Over");
+				}
+			};
+
+			sheconstructor.prototype.eat = function(index) {
+				var tempx = this.she[this.sheLength - 1][0];
+				var tempy = this.she[this.sheLength - 1][1];
+
+				tempx += this.dir[index][0];
+				tempy += this.dir[index][1];
+				if(tempx == this.biax && tempy == this.biay) {
+					this.isBigger = true;
+					this.she[this.sheLength][0] = tempx;
+					this.she[this.sheLength][1] = tempy;
+					this.sheLength++;
+				}
+			};
+
+			sheconstructor.prototype.up = function(obj) {
+				var tempx = this.she[this.sheLength - 1][0] - 1;
+				var tempy = this.she[this.sheLength - 1][1];
+				//				console.log("up " + tempx + " " + tempy);
+				if(obj.isonWall(tempx, tempy) || obj.isonShe(tempx, tempy)) {
+					//					console.log("onwall " + isonWall(tempx, tempy));
+					//					console.log("onShe " + isonShe(tempx, tempy));
+					return false;
+				} else {
+					for(var i = 1; i < this.sheLength; ++i) {
+						this.she[i - 1][0] = this.she[i][0];
+						this.she[i - 1][1] = this.she[i][1];
+					}
+					this.she[this.sheLength - 1][0] = tempx;
+					this.she[this.sheLength - 1][1] = tempy;
+				}
+				return true;
+			};
+
+			sheconstructor.prototype.left = function(obj) {
+				var tempx = this.she[this.sheLength - 1][0];
+				var tempy = this.she[this.sheLength - 1][1] - 1;
+				//				console.log("left " + tempx + " " + tempy);
+				if(obj.isonWall(tempx, tempy) || obj.isonShe(tempx, tempy)) {
+					return false;
+				} else {
+					for(var i = 1; i < this.sheLength; ++i) {
+						this.she[i - 1][0] = this.she[i][0];
+						this.she[i - 1][1] = this.she[i][1];
+					}
+					this.she[this.sheLength - 1][0] = tempx;
+					this.she[this.sheLength - 1][1] = tempy;
+				}
+				return true;
+			};
+
+			sheconstructor.prototype.down = function(obj) {
+				var tempx = this.she[this.sheLength - 1][0] + 1;
+				var tempy = this.she[this.sheLength - 1][1];
+				//				console.log("down " + tempx + " " + tempy);
+				if(obj.isonWall(tempx, tempy) || obj.isonShe(tempx, tempy)) {
+					return false;
+				} else {
+					for(var i = 1; i < this.sheLength; ++i) {
+						this.she[i - 1][0] = this.she[i][0];
+						this.she[i - 1][1] = this.she[i][1];
+					}
+					this.she[this.sheLength - 1][0] = tempx;
+					this.she[this.sheLength - 1][1] = tempy;
+				}
+				return true;
+
+			};
+
+			sheconstructor.prototype.right = function(obj) {
+				var tempx = this.she[this.sheLength - 1][0];
+				var tempy = this.she[this.sheLength - 1][1] + 1;
+				//				console.log("right " + tempx + " " + tempy);
+				if(obj.isonWall(tempx, tempy) || obj.isonShe(tempx, tempy)) {
+					return false;
+				} else {
+					for(var i = 1; i < this.sheLength; ++i) {
+						this.she[i - 1][0] = this.she[i][0];
+						this.she[i - 1][1] = this.she[i][1];
+					}
+					this.she[this.sheLength - 1][0] = tempx;
+					this.she[this.sheLength - 1][1] = tempy;
+				}
+				return true;
+			};
+
+			//初始化数组，必须首先执行
+			sheconstructor.prototype.init = function(obj) {
+				for(var i = 0; i < 300; ++i) {
+					this.she[i] = [];
+				}
+				for(var i = 0; i < this.heng; ++i) {
+					this.maps[i] = [];
+					this.automaps[i] = [];
+					this.autobook[i] = [];
+				} // 生成二位数组
+				//代表默认的egzi
+				for(var i = 0; i < this.heng; ++i) {
+					for(var j = 0; j < this.shu; ++j) {
+						this.automaps[i][j] = 0;
+						this.autobook[i][j] = 0;
+					}
+				}
+				for(var i = 0; i < 4; ++i) {
+					this.dir[i] = [];
+				}
+				this.dir[0][0] = 0;
+				this.dir[0][1] = -1;
+				this.dir[1][0] = -1;
+				this.dir[1][1] = 0;
+				this.dir[2][0] = 0;
+				this.dir[2][1] = 1;
+				this.dir[3][0] = 1;
+				this.dir[3][1] = 0;
+
+				for(var i = 0; i < 20; ++i) {
+					this.walls[i] = [];
+				}
+				if(obj.name == 'box'){
+					for(var i = 0; i < 10; ++i) {
+					this.walls[i][0] = i + 6;
+					this.walls[i][1] = 16;
+				    }
+				    for(var i = 10; i < 20; ++i) {
+					this.walls[i][0] = i;
+					this.walls[i][1] = 5;
+				    }
+				}else{
+					for(var i = 0; i < 10; ++i) {
+					this.walls[i][0] = i + 6;
+					this.walls[i][1] = 14;
+				    }
+				    for(var i = 10; i < 20; ++i) {
+					this.walls[i][0] = i;
+					this.walls[i][1] = 25;
+				    }
+				}
+				
+			};
+			//初始化地图数据
+			sheconstructor.prototype.generateMap = function() {
+				var n = this.heng;
+				var m = this.shu;
+				for(var i = 0; i < n; ++i) {
+					for(var j = 0; j < m; ++j) {
+						this.maps[i][j] = "<div class = 'gezi'> </div>";
+					}
+				}
+				
+					for(var i = 0; i < 20; ++i) {
+					this.maps[this.walls[i][0]][this.walls[i][1]] = "<div class = 'wall'> </div>";
+					//					console.log(walls[i][0] + " " + walls[i][0] + "wall coor ");
+				   }
+				
+				
+			};
+			//产生蛇的出生位置,只执行一次
+			sheconstructor.prototype.generateShe = function() {
+				for(var i = 0; i < 3; ++i) {
+					this.she[i][0] = 10;
+					this.she[i][1] = i + 10;
+
+				}
+			};
+			//产生mubiao, 并直接写入
+			sheconstructor.prototype.generetaBia = function(obj) {
+				//鱼饵被吃掉需要重新生成
+				if(this.isBigger || this.isFirst) {
+					while(obj.isonShe(this.biax, this.biay) != 0 || obj.isonWall(this.biax, this.biay) == true) {
+						this.biax = parseInt(Math.random() * this.heng);
+						this.biay = parseInt(Math.random() * this.shu);
+					}
+					this.maps[this.biax][this.biay] = "<div class = 'bia'> </div>";
+					this.isFirst = false;
+				} else {
+					this.maps[this.biax][this.biay] = "<div class = 'bia'> </div>";
+				}
+				this.isBigger = false;
+
+			};
+			//将运动的蛇写入maps 在generateMap之后
+			sheconstructor.prototype.showShe = function() {
+				var tempx = 0;
+				var tempy = 0;
+				var message = '';
+				var sheLength = this.sheLength;
+				for(var i = 0; i < sheLength; ++i) {
+					tempx = this.she[i][0];
+					tempy = this.she[i][1];
+					this.maps[tempx][tempy] = "<div class = 'snack'> </div>";
+					//                  console.log(maps[tempx][tempy] + "showShe()"); 	
+					//                  console.log(tempx + " " + tempy + " snack zuobiao ");
+				}
+				tempx = this.she[sheLength - 1][0];
+				tempy = this.she[sheLength - 1][1];
+				this.maps[tempx][tempy] = "<div class = 'shetou'> </div>";
+
+			};
+			//最后写入网页
+			sheconstructor.prototype.showGame = function(obj) {
+				var res = "";
+				for(var i = 0; i < this.heng; ++i) {
+					for(var j = 0; j < this.shu; ++j) {
+						res += this.maps[i][j];
+						res += ' ';
+					}
+				}
+				var where = document.getElementById(obj.name);
+				where.innerHTML = res;
+			};
+
+			//判断xy 是否在蛇身
+			sheconstructor.prototype.isonShe = function(x, y) {
+				for(var i = 0; i < this.sheLength; ++i) {
+					if(x == this.she[i][0] && y == this.she[i][1]) {
+						return true;
+					}
+				}
+				return false;
+			};
+
+			sheconstructor.prototype.isonWall = function(x, y) {
+				if(x < 0 || x >= this.heng || y < 0 || y >= this.shu) {
+					//					alert("border " + x + " " + y);
+					return true;
+				}
+				for(var i = 0; i < 20; ++i) {
+					if(x == this.walls[i][0] && y == this.walls[i][1]) {
+						//						alert("Wall " + x + " " + y);
+						return true;
+					}
+				}
+				return false;
+			};
+
+			sheconstructor.prototype.paintgame = function(obj) {
+				obj.generateMap();
+				obj.showShe();
+				obj.generetaBia(obj);
+				obj.showGame(obj);
+			};
+			var one = new sheconstructor("box");
+			one.init(one);
+			one.generateMap();
+			one.generateShe();
+			one.generetaBia(one);
+			one.showShe();
+			one.showGame(one);
+			document.addEventListener("keypress", function(event) {
+				//console.log(event.keyCode);
+				one.keycode = event.keyCode;
+				one.keystring = event.key;
+				one.dealKeyPress(one);
+			}, false);
+			window.onload = function() {
+				interval = setInterval(one.dealKeyPress(one), 1000);
+			};
+			var two = new sheconstructor("box2");
+			two.init(two);
+			two.generateMap();
+			two.generateShe();
+			two.generetaBia(two);
+			two.showShe();
+			two.showGame(two);
+			document.addEventListener("keyup", function(event){
+				two.keycode = event.keyCode;
+				two.keystring = event.key;
+				two.dealKeyPress(two);
+			}, false);
+		</script>
+	</body>
+
+</html>

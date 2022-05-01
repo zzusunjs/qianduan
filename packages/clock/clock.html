@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>sangeshizhong</title>
+		<style>
+			#circle {
+				float:left;
+				position: relative;
+				margin: 100px auto;
+				margin-right: 30px;
+				width: 400px;
+				height: 400px;
+				border-radius: 50%;
+				border: solid gray;
+			}
+			#circle0 {
+				float:left;
+				position: relative;
+				margin: 100px auto;
+				margin-right: 30px;
+				width: 400px;
+				height: 400px;
+				border-radius: 50%;
+				border: solid gray;
+			}
+			#circle1 {
+				float:left;
+				position: relative;
+				margin: 100px auto;
+				margin-right: 30px;
+				width: 400px;
+				height: 400px;
+				border-radius: 50%;
+				border: solid gray;
+			}
+			#shi1{
+			}
+			#fen1{
+				
+			}
+			#miao1{
+				
+			}
+			
+			.inner_circle {
+				position: absolute;
+				width: 380px;
+				height: 380px;
+				border-radius: 50%;
+				background-color: white;
+				left: 50%;
+				top: 50%;
+				margin: -190px 0 0 -190px;
+				
+			}
+			.center_circle {
+				position: absolute;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background-color: black;
+				left: 50%;
+				top: 50%;
+				margin: -10px 0 0 -10px;
+			}
+			
+			.line {
+				position: absolute;
+				left: 50%;
+				margin-left: -4px;
+				width: 8px;
+				height: 400px;
+				background-color: black;
+			}
+			.line1 {
+				transform: rotate(30deg);
+			}
+			.line2 {
+				transform: rotate(60deg);
+			}
+			.line3 {
+				transform: rotate(90deg);
+			}
+			.line4 {
+				transform: rotate(120deg);
+			}
+			.line5 {
+				transform: rotate(150deg);
+			}
+			.line6 {
+				transform: rotate(180deg);
+			}
+			
+			.line1,
+			.line2,
+			.line4,
+			.line5 {
+				width: 2px;
+				margin-left: -1px;
+			}
+			.shi{
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				width: 8px;
+				height: 100px;
+				margin: -100px 0 0 -4px;
+				border-radius: 5px;
+				background-color: goldenrod;
+				transform-origin: bottom;
+				transform: rotate(153deg);
+				
+			}
+			.fen {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				width: 6px;
+				height: 140px;
+				border-radius: 5px;
+				margin: -140 0 0 -3px;
+				background-color: black;
+				transform-origin: top;
+				transform: rotate(311deg);
+				
+			}
+			.miao {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				width: 2px;
+				height: 160px;
+				margin: -160px 0 0 -1px;
+				background-color: red;
+				transform-origin: bottom;
+                /*animation: tick-tock 60s steps(60, end) infinite;*/
+
+			}
+			.clock1shi{
+				animation: tick-tock 21600s steps(60, end) infinite;
+			}
+			.clock1fen{
+				animation: tick-tock 3600s steps(60, end) infinite;
+			}.clock1miao{
+				animation: tick-tock 60s steps(60, end) infinite;
+			}
+			@keyframes tick-tock {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+		</style>
+		
+	</head>
+
+	<body>
+		<div id="circle0">
+			<div class="line">
+				<div class="line line1"></div>
+				<div class="line line2"></div>
+				<div class="line line3"></div>
+				<div class="line line4"></div>
+				<div class="line line5"></div>
+				<div class="line line6"></div>
+			</div>
+			<div class="inner_circle"></div>
+			<div class="shi"></div>
+			<div class="fen"></div>
+			<div class="miao"></div>
+			<div class="center_circle"></div>
+		</div>
+		<div id="circle">
+			<div class="line">
+				<div class="line line1"></div>
+				<div class="line line2"></div>
+				<div class="line line3"></div>
+				<div class="line line4"></div>
+				<div class="line line5"></div>
+				<div class="line line6"></div>
+			</div>
+			<div class="inner_circle"></div>
+			<div class="shi clock1shi"></div>
+			<div class="fen clock1fen"></div>
+			<div class="miao clock1miao"></div>
+			<div class="center_circle"></div>
+		</div>
+		<div id="circle1">
+			<div class="line">
+				<div class="line line1"></div>
+				<div class="line line2"></div>
+				<div class="line line3"></div>
+				<div class="line line4"></div>
+				<div class="line line5"></div>
+				<div class="line line6"></div>
+			</div>
+			<div class="inner_circle"></div>
+			<div class="shi clock1shi" id="shi1"></div>
+			<div class="fen clock1fen" id="fen1"></div>
+			<div class="miao clock1miao" id="miao1"></div>
+			<div class="center_circle"></div>
+		</div>
+		<script language="JavaScript">
+			function setTime(){
+				var d = new Date;
+				var h =  d.getHours();
+				var m = d.getMinutes();
+				var s = d.getSeconds();
+
+                var shi = document.getElementById('shi1');
+                var fen = document.getElementById('fen1');
+                var miao = document.getElementById('miao1');
+                
+                console.log(h + " " + m + " " + s);
+                var miaojiao = s / 60* 360;
+                var fenjiao = (m + s / 60) / 60 * 360 + 180; 
+                var shijiao = (h + m / 60 + s / 3600) / 24 * 720; 
+                console.log(fenjiao);
+                
+                shi.style.transform = "rotate(" + shijiao + "deg)";				
+                fen.style.transform = "rotate(" + fenjiao  + "deg)";
+                miao.style.transform = "rotate(" +  miaojiao + "deg)";
+			}
+			window.onload = setTime();
+		</script>
+	</body>
+	
+
+</html>
