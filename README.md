@@ -1,17 +1,11 @@
-# qianduan
+# front-end code snippets
 
-code about HTML5 CSS3 and JavaScript
+## clock
 
-在 huatu 文件夹了放了 js 文件，目录结构有些混乱。
-主要用到的技术有： HTML5 中的 canvas 标签
-CSS3 中的圆角的属性，
-CSS3 中的简单动画
-JavaScript 中面向对象的一部分知识。
+`packages/clock` 文件夹下 `clock.html` 使用 html 和 css 实现了时钟, 通过 css 动画实现了时针，分针，秒针的旋转，通过 js 获取当前时间并设置时钟 对应的 dom 元素的样式。
 
-     Sorry that put some js file in the huatu folder, making a whole mess.
-     Tech used: <canvas> in HTML5
-                draw a circle with <div> and CSS3
-                animation in CSS3
-                part of Object-oriented knowledge in JavaScript
-     Produced during the Practices in the 863 company, with the help of my manager YinZhaosheng.
-     Actually, he provided the 'paint' part and the 'cat' part while I build the rest.
+主要涉及到的技术有：1. css 中元素的水平垂直居中, 2. css 的相对定位，绝对定位 3. css 动画 4. javascript 内置对象，DOM。
+
+---
+
+... to be continue
