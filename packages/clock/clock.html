@@ -196,6 +196,7 @@
       <div class="second-hand second-animation"></div>
       <div class="center-circle"></div>
     </div>
+
     <!-- 获取当前时间并设置 时钟角度，时针分针秒针开始旋转 -->
     <div class="clock-border-circle clock-border-radius">
       <div class="line">
@@ -214,7 +215,8 @@
     </div>
 
     <script language="javascript">
-      function setTime() {
+      // setCurrentTime to third clock
+      function setCurrentTime() {
         var date = new Date();
         var hour = date.getHours();
         var minute = date.getMinutes();
@@ -235,7 +237,9 @@
         minuteHand.style.transform = `rotate(${minuteHandAngle}deg)`;
         secondHand.style.transform = `rotate(${secondHandAngle}deg)`;
       }
-      window.onload = setTime();
+
+      // 页面加载后就执行
+      window.onload = setCurrentTime();
     </script>
   </body>
 </html>
