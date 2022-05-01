@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Canvas 叮当猫</title>
+    <style>
+      canvas {
+        border: 1px solid;
+        margin: 50px auto;
+        display: block;
+        text-align: center;
+      }
+      .canvasBox {
+        width: 1000px;
+        background: whitesmoke;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="canvasBox">
+      <canvas width="400" height="600" id="canvas"></canvas>
+    </div>
+    <script>
+      window.onload = function () {
+        showone();
+      };
+
+      function doraemon(cxt, x, y) {
+        // 圆形
+        cxt.arc(x, y, 12, 0, 2 * Math.PI);
+      }
+
+      function headBackgorund(cxt) {
+        cxt.lineWidth = 1;
+        cxt.strokeStyle = "black";
+        cxt.arc(200, 175, 175, 0.7 * Math.PI, 0.3 * Math.PI);
+        var head = cxt.createRadialGradient(260, 25, 8, 200, 175, 175);
+        head.addColorStop(0, "white");
+        head.addColorStop(1, "#16B3DC");
+        cxt.fillStyle = head;
+        cxt.fill();
+        cxt.stroke();
+      }
+
+      var showone = function () {
+        var cxt = document.getElementById("canvas").getContext("2d");
+        cxt.beginPath();
+        headBackgorund(cxt);
+      };
+    </script>
+  </body>
+</html>
